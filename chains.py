@@ -1,9 +1,10 @@
+import json
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 
 load_dotenv()
-llm = ChatGroq(model="llama3-8b-8192")
+llm = ChatGroq(model="llama-3.3-70b-versatile")
 
 def analyze_jd(job_description: str):
     prompt = PromptTemplate(
@@ -37,3 +38,21 @@ No extra text, just the JSON array.""",
     chain = prompt | llm
     result = chain.invoke({"job_description": job_description})  
     return {"questions": result.content}
+
+def evaluate_answer(question: str, answer: str, role_level: str):
+    prompt = PromptTemplate(
+        template="""You are an expert interviewer.
+Evaluate this interview answer for a {role_level} position.
+Question: {question}
+Candidate's answer: {answer}
+Return ONLY valid JSON with exactly these keys:
+{{"score": 7, "feedback": "your critique here", "better_answer": "stronger version here"}}
+No extra text, just the JSON.""",
+
+        input_variables=["question","answer","role_level"]
+    )
+
+    chain = prompt | llm
+    result = chain.invoke({"question": question, "answer": answer, "role_level": role_level})  
+    parsed = json.loads(result.content) 
+    return parsed
