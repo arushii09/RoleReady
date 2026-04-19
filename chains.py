@@ -47,6 +47,11 @@ Question: {question}
 Candidate's answer: {answer}
 Return ONLY valid JSON with exactly these keys:
 {{"score": 7, "feedback": "your critique here", "better_answer": "stronger version here"}}
+Score strictly based on these rules:
+- 1-3: Answer shows no knowledge or just "I don't know"
+- 4-6: Basic answer, missing important details
+- 7-8: Good answer with solid understanding
+- 9-10: Excellent, detailed, covers edge cases
 No extra text, just the JSON.""",
 
         input_variables=["question","answer","role_level"]
