@@ -61,3 +61,24 @@ No extra text, just the JSON.""",
     result = chain.invoke({"question": question, "answer": answer, "role_level": role_level})  
     parsed = json.loads(result.content) 
     return parsed
+
+def generate_report(evaluations: list, job_description: str):
+    prompt = PromptTemplate(
+        template="""You are an expert interviewer.
+Here are the candidate's 10 interview evaluations:
+{evaluations}
+
+Job they applied for: {job_description}
+
+Return ONLY valid JSON with exactly these keys:
+{{"overall_score": 7.5, "strengths": ["str1", "str2", "str3"], "weak_areas": ["area1", "area2", "area3"], "study_plan": ["topic1", "topic2", "topic3"]}}
+No extra text, just the JSON.""",
+
+        input_variables=["evaluations","job_description"]
+
+    )
+
+    chain = prompt | llm
+    result = chain.invoke({"evaluations": evaluations, "job_description": job_description})
+    parsed = json.loads(result.content)
+    return parsed
