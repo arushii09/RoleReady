@@ -1,4 +1,4 @@
-
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 from chains import analyze_jd
@@ -7,6 +7,13 @@ from chains import evaluate_answer
 from chains import generate_report
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class JDRequest(BaseModel):
     job_description: str
