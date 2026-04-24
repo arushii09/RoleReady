@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrepAI — Your Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+
+  <nav class="nav">
+    <div class="logo">PREP<span>AI</span></div>
+    <div class="nav-tag">Report</div>
+  </nav>
+
+  <main class="results-main">
+    <div class="results-header">
+      <div class="eyebrow">Interview Complete</div>
+      <h1 class="headline small">YOUR<br><span class="outline-text">DEBRIEF</span></h1>
+    </div>
+
+    <div class="score-row">
+      <div class="score-card big">
+        <div class="score-label">Overall Score</div>
+        <div class="score-number" id="overallScore">—</div>
+        <div class="score-max">/ 10</div>
+      </div>
+      <div class="score-meta">
+        <div class="meta-item" id="scoreVerdict">Calculating...</div>
+      </div>
+    </div>
+
+    <div class="report-grid">
+      <div class="report-section green">
+        <div class="section-icon">↑</div>
+        <h3>Strengths</h3>
+        <ul id="strengthsList"></ul>
+      </div>
+      <div class="report-section red">
+        <div class="section-icon">↓</div>
+        <h3>Weak Areas</h3>
+        <ul id="weakAreasList"></ul>
+      </div>
+      <div class="report-section yellow full-width">
+        <div class="section-icon">→</div>
+        <h3>Study Plan</h3>
+        <ul id="studyPlanList"></ul>
+      </div>
+    </div>
+
+    <div class="qa-review">
+      <h3 class="review-title">Question Review</h3>
+      <div id="qaList"></div>
+    </div>
+
+    <button class="cta-btn" onclick="localStorage.clear(); window.location.href='index.html'">
+      <span class="btn-label">Start New Interview</span>
+      <span class="btn-arrow">↗</span>
+    </button>
+  </main>
+
+  <script src="results.js"></script>
+</body>
+</html>
