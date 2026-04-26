@@ -83,7 +83,7 @@ ai-interview-coach/
 
 **1. Clone the repo**
 ```bash
-git clone https://github.com/yourusername/ai-interview-coach.git
+git clone https://github.com/arushii09/ai-interview-coach.git
 cd ai-interview-coach
 ```
 
