@@ -125,6 +125,6 @@ Open `frontend/index.html` with Live Server in VS Code — or just open it direc
 
 ## Built by
 
-Arushi — CS student building real AI tools, not just chatbots.
+Arushi — CS student building real AI tools.
 
 > *"I actually used this tool to prep for interviews while building it."*
