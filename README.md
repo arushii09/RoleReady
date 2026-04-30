@@ -1,6 +1,6 @@
 # RoleReady — AI Interview Coach
 
-> Paste any job description. Get a full personalized mock interview — questions, scored answers, and a debrief report.
+> Paste any job description. Get a full personalized mock interview questions, scored answers, and a debrief report.
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green) ![LangChain](https://img.shields.io/badge/LangChain-latest-orange) ![Groq](https://img.shields.io/badge/Groq-LLaMA3.3-purple)
 
