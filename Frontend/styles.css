@@ -5,10 +5,10 @@
   --black: #0a0a0a;
   --white: #f5f0e8;
   --cream: #ede8dc;
-  --accent: #c8f04a;
-  --accent-dim: #a8cc30;
+  --accent: #ec4899;
+  --accent-dim: #be185d;
   --red: #ff4d3d;
-  --muted: #666;
+  --muted: #dbd3d3;
   --border: rgba(245,240,232,0.12);
   --card-bg: rgba(245,240,232,0.04);
 }
@@ -109,7 +109,7 @@ body {
 
 .desc {
   font-size: 1rem;
-  color: #999;
+  color: #b7b3b3;
   line-height: 1.7;
   max-width: 400px;
   margin-bottom: 2.5rem;
@@ -227,7 +227,7 @@ textarea::placeholder { color: #444; }
 .card-note {
   text-align: center;
   font-size: 0.75rem;
-  color: #444;
+  color: #8d8989;
 }
 
 /* ── INTERVIEW PAGE ── */
@@ -304,7 +304,7 @@ textarea::placeholder { color: #444; }
 .interview-hint {
   text-align: center;
   font-size: 0.8rem;
-  color: #333;
+  color: #a5a1a1;
   font-style: italic;
 }
 
