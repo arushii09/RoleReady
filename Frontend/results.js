@@ -1,4 +1,4 @@
-const API = "http://localhost:8000"
+const API = "https://roleready-api.onrender.com"
 const evaluations = JSON.parse(localStorage.getItem("evaluations"))
 const jd = localStorage.getItem("jd")
 

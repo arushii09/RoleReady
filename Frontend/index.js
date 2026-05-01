@@ -1,4 +1,4 @@
-const API = "http://localhost:8000"
+const API = "https://roleready-api.onrender.com"
 
 // update character counter as user types
 document.getElementById("jobDescription").addEventListener("input", function () {
