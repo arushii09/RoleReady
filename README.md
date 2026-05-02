@@ -28,7 +28,7 @@ Final report — overall score, strengths, weak areas, study plan
 
 ## Demo
 
-> Live link: [your-netlify-url.netlify.app](https://your-netlify-url.netlify.app)
+> Live link: [your-netlify-url.netlify.app](https://role-ready.netlify.app/)
 
 ---
 
