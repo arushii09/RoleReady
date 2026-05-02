@@ -22,6 +22,7 @@ body {
   font-weight: 300;
   min-height: 100vh;
   overflow-x: hidden;
+  
 }
 
 /* Noise texture overlay */
@@ -501,4 +502,27 @@ textarea::placeholder { color: #444; }
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.footer-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #454444;              /* text color */
+    font-size: 14px;
+}
+
+.footer-text::before,
+.footer-text::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #454444;        /* grey line */
+    margin: 0 10px;
+}
+
+/* Optional: footer background */
+footer {
+    background: #0a0a0a;        /* black background */
+    padding: 15px 10px;
 }
