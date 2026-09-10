@@ -1,60 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RoleReady — Interview Coach</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="noise"></div>
-
-  <nav class="nav">
-    <div class="logo">ROLE<span>READY</span></div>
-    <div class="nav-tag">Home</div>
-  </nav>
-
-  <main class="hero">
-    <div class="hero-left">
-      <div class="eyebrow">AI-Powered Mock Interviews</div>
-      <h1 class="headline">
-        TURN ANY<br>
-        JOB POST<br>
-        INTO YOUR<br>
-        <span class="outline-text">INTERVIEW</span>
-      </h1>
-      <p class="desc">Stop guessing what they'll ask. Paste any job post, get 10 tailored questions, scored answers, and a full debrief in minutes.</p>
-      <div class="steps-row">
-        <div class="step"><span>01</span>Paste JD</div>
-        <div class="step-arrow">→</div>
-        <div class="step"><span>02</span>Answer</div>
-        <div class="step-arrow">→</div>
-        <div class="step"><span>03</span>Report</div>
-      </div>
-    </div>
-
-    <div class="hero-right">
-      <div class="card">
-        <div class="card-label">Job Description</div>
-        <textarea id="jobDescription" placeholder="Paste the job description here...
-
-e.g. We are hiring a Python backend developer. Must know FastAPI, REST APIs, and SQL..."></textarea>
-        <div class="char-row">
-          <span id="charCount">0</span> characters
-        </div>
-        <button id="analyzeBtn" class="cta-btn">
-          <span class="btn-label">Analyze & Start Interview</span>
-          <span class="btn-arrow">↗</span>
-        </button>
-        <div class="card-note">Takes ~10 seconds · Powered by LLaMA 3.3</div>
-      </div>
-    </div>
-  </main>
-<footer class="footer">
-    <p class="footer-text">Made by Arushi</p>
-</footer>
-  <script src="index.js"></script>
-</body>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RoleReady — AI Interview Coach Dashboard</title>
+  </head>
+  <body class="bg-black text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
