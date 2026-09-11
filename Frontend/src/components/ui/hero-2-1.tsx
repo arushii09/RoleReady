@@ -1,14 +1,19 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight, Menu, X, User, LogOut } from "lucide-react";
+import { ArrowRight, Menu, X, User, LogOut, Award, History } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 import CinematicScrol from "@/components/ui/scroll-triggered-hero";
 import { Footer } from "@/components/ui/footer";
 import { AuthModal } from "@/components/ui/auth-modal";
 
-const Hero2 = () => {
+interface Hero2Props {
+  onStartInterview?: () => void;
+  onOpenHistory?: () => void;
+}
+
+const Hero2 = ({ onStartInterview, onOpenHistory }: Hero2Props) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
@@ -63,31 +68,35 @@ const Hero2 = () => {
         <nav className="container mx-auto flex items-center justify-between px-4 py-4 mt-6">
           <div className="flex items-center">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black">
-              <span className="font-bold">⚡</span>
+              <span className="font-bold">🗒</span>
             </div>
             <span className="ml-2 text-xl font-bold text-white">RoleReady</span>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <div className="flex items-center space-x-6">
-              <NavItem label="Use Cases" hasDropdown />
-              <NavItem label="Products" hasDropdown />
-              <NavItem label="Resources" hasDropdown />
-              <NavItem label="Pricing" />
-            </div>
+
             <div className="flex items-center space-x-3">
               {userEmail ? (
-                <div className="flex items-center gap-3 bg-white/10 px-4 py-2 rounded-full border border-white/10">
-                  <User className="h-4 w-4 text-indigo-400" />
-                  <span className="text-sm font-medium text-white max-w-[150px] truncate">{userEmail}</span>
+                <div className="flex items-center gap-3">
                   <button
-                    onClick={handleLogout}
-                    title="Log out"
-                    className="p-1 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                    onClick={onOpenHistory}
+                    className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold transition-colors"
                   >
-                    <LogOut className="h-4 w-4" />
+                    <History className="h-3.5 w-3.5" /> My History
                   </button>
+
+                  <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full border border-white/10">
+                    <User className="h-4 w-4 text-indigo-400" />
+                    <span className="text-sm font-medium text-white max-w-[140px] truncate">{userEmail}</span>
+                    <button
+                      onClick={handleLogout}
+                      title="Log out"
+                      className="p-1 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                    >
+                      <LogOut className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <button
@@ -127,7 +136,7 @@ const Hero2 = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black">
-                    <span className="font-bold">⚡</span>
+                    <span className="font-bold">🗒</span>
                   </div>
                   <span className="ml-2 text-xl font-bold text-white">
                     RoleReady
@@ -138,14 +147,20 @@ const Hero2 = () => {
                 </button>
               </div>
               <div className="mt-8 flex flex-col space-y-6">
-                <MobileNavItem label="Use Cases" />
-                <MobileNavItem label="Products" />
-                <MobileNavItem label="Resources" />
-                <MobileNavItem label="Pricing" />
-                
+
+
                 {userEmail ? (
                   <div className="pt-4 space-y-3">
                     <div className="text-sm text-gray-300">Logged in as <span className="font-semibold text-white">{userEmail}</span></div>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        onOpenHistory?.();
+                      }}
+                      className="w-full justify-center bg-indigo-600/30 border border-indigo-500/50 py-3 rounded-lg text-white font-medium flex items-center gap-2"
+                    >
+                      <History className="h-4 w-4" /> My Past Interviews
+                    </button>
                     <button
                       onClick={handleLogout}
                       className="w-full justify-center border border-gray-700 py-3 rounded-lg text-white font-medium flex items-center gap-2"
@@ -194,8 +209,8 @@ const Hero2 = () => {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
             <button
-              onClick={() => openAuth(userEmail ? "signin" : "signup")}
-              className="h-12 rounded-full bg-white px-8 text-base font-medium text-black hover:bg-white/90 transition-colors shadow-lg shadow-white/10"
+              onClick={onStartInterview}
+              className="h-12 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-8 text-base font-semibold transition-all shadow-xl shadow-indigo-500/25 flex items-center gap-2"
             >
               Simulate Your Interview
             </button>
