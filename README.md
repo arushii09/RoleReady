@@ -1,14 +1,14 @@
-# RoleReady — AI Interview Coach
+# RoleReady — AI Technical Interview Coach
 
-> Paste any job description. Get a full personalized mock interview questions, scored answers, and a debrief report.
+> Paste any job description. Experience an end-to-end multi-step AI mock interview with live answer evaluation, structured scoring, and persistent debrief reports.
 
-![Python](https://img.shields.io/badge/Python-3.11-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green) ![LangChain](https://img.shields.io/badge/LangChain-latest-orange) ![Groq](https://img.shields.io/badge/Groq-LLaMA3.3-purple)
+![Python](https://img.shields.io/badge/Python-3.11-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green) ![React](https://img.shields.io/badge/React-18-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![TailwindCSS](https://img.shields.io/badge/Tailwind-3-38bdf8) ![JWT](https://img.shields.io/badge/Auth-JWT-orange) ![Groq](https://img.shields.io/badge/Groq-LLaMA3.1-purple)
 
 ---
 
-## What it does
+## ⚡ What it does
 
-Most students applying for AI roles build chatbots. This is different — a multi-step AI pipeline that simulates a real interview end to end.
+RoleReady is a production-grade full-stack AI platform that simulates a real technical mock interview end to end.
 
 ```
 Paste Job Description
@@ -17,112 +17,123 @@ AI analyzes the JD — extracts skills, role level, responsibilities
         ↓
 Generates 10 personalized interview questions (technical + behavioral)
         ↓
-User answers each question
+User submits answers for each prompt
         ↓
 AI evaluates every answer — score out of 10, specific feedback, better answer
         ↓
-Final report — overall score, strengths, weak areas, study plan
+Final Debrief Report — overall score, strengths, weak areas, study plan
+        ↓
+Saved to Database — User history stored in PostgreSQL/SQLite tied to JWT account
 ```
 
 ---
 
-## Demo
+## 🌐 Demo
 
-> Live link: [RoleReady](https://role-ready.netlify.app/)
+> Live Link: [RoleReady](https://role-ready.netlify.app/)  
+> API Docs: `http://localhost:8000/docs`
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
-| AI Pipeline | LangChain + Groq (LLaMA 3.3 70B) |
-| Backend | FastAPI + Python |
-| Frontend | HTML, CSS, Vanilla JS |
-| Deployment | Render (backend) + Netlify (frontend) |
+| **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS |
+| **Backend** | FastAPI + Python 3.11 |
+| **Security & Auth** | JWT Bearer Tokens (`pyjwt`) + `pbkdf2_sha256` Password Hashing |
+| **Database** | SQLAlchemy ORM + SQLite (Dev) / PostgreSQL (Prod) |
+| **AI Engine** | LangChain + Groq API (`llama-3.1-8b-instant`) |
+| **Deployment** | Render (Backend API) + Netlify / Vercel (Frontend) |
 
 ---
 
-## What makes it technically interesting
+## 💡 Technical Architecture Highlights
 
-This isn't a single LLM call — it's a **4-step AI pipeline**:
+This is not a simple chatbot wrapper — it is a **secure, multi-step production AI system**:
 
-| Step | Endpoint | What it shows |
-|---|---|---|
-| JD parsing | `POST /analyze-jd` | Prompt engineering |
-| Question generation | `POST /generate-questions` | Dynamic LLM chaining |
-| Answer evaluation | `POST /evaluate-answer` | Structured JSON outputs |
-| Final report | `POST /generate-report` | Multi-input synthesis |
-
-Each step feeds into the next. The evaluations from all 10 questions are aggregated into a final report — this is exactly how production AI pipelines work.
+1. **Stateful User Authentication**: JWT Bearer Token validation protecting user history endpoints.
+2. **Relational Data Persistence**: SQLAlchemy database schema linking user accounts (`users` table) to saved interview debrief reports (`interview_history` table).
+3. **Multi-Step AI Pipeline**:
+   - `POST /generate-questions` $\rightarrow$ Dynamic question array generation based on JD parsing.
+   - `POST /evaluate-answer` $\rightarrow$ Strict 1-10 scoring & structured feedback per response.
+   - `POST /generate-report` $\rightarrow$ Multi-input synthesis creating a comprehensive study plan.
+   - `POST /api/history` $\rightarrow$ Automatic persistence of debrief reports to database.
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
-```
-ai-interview-coach/
-├── backend/
-│   ├── main.py         ← FastAPI routes
-│   ├── chains.py       ← LangChain AI logic
-│   ├── .env            ← API keys (never committed)
+```text
+RoleReady/
+├── Backend/
+│   ├── main.py          ← FastAPI routes & CORS setup
+│   ├── chains.py        ← LangChain AI logic & Groq pipelines
+│   ├── auth.py          ← JWT token creation & password hashing
+│   ├── database.py      ← SQLAlchemy DB engine & session setup
+│   ├── models.py        ← User & InterviewHistory SQL tables
+│   ├── schemas.py       ← Pydantic request & response validation
 │   └── requirements.txt
-└── frontend/
-    ├── index.html      ← Paste JD
-    ├── interview.html  ← Answer questions
-    ├── results.html    ← Final report
-    ├── styles.css
-    ├── index.js
-    ├── interview.js
-    └── results.js
+└── Frontend/
+    ├── src/
+    │   ├── components/  ← Interview Flow, Auth Modal, Footer & Hero UI
+    │   ├── lib/         ← API utility helpers
+    │   └── App.tsx
+    ├── public/          ← Videos and assets
+    ├── package.json
+    └── vite.config.ts
 ```
 
 ---
 
-## Run locally
+## 🚀 Run Locally
 
-**1. Clone the repo**
+### 1. Clone the repository
 ```bash
-git clone https://github.com/arushii09/ai-interview-coach.git
-cd ai-interview-coach
+git clone https://github.com/arushii09/RoleReady.git
+cd RoleReady
 ```
 
-**2. Set up backend**
+### 2. Set up the Backend
 ```bash
-cd backend
+cd Backend
 pip install -r requirements.txt
 ```
 
-**3. Add your Groq API key**
-
-Create a `.env` file in the `backend` folder:
+Create a `.env` file inside `Backend/`:
+```env
+GROQ_API_KEY=your_groq_api_key_here
+SECRET_KEY=your_jwt_secret_key_here
 ```
-GROQ_API_KEY=your_key_here
-```
-Get a free key at [console.groq.com](https://console.groq.com)
 
-**4. Start the backend**
+Start the FastAPI server:
 ```bash
-uvicorn main:app --reload
+uvicorn main:app --reload --port 8000
 ```
 
-**5. Open the frontend**
+### 3. Set up the Frontend
+In a new terminal:
+```bash
+cd Frontend
+npm install
+npm run dev
+```
 
-Open `frontend/index.html` with Live Server in VS Code — or just open it directly in your browser.
+Open `http://localhost:3000` (or `http://localhost:5173`) in your browser!
 
 ---
 
-## API Endpoints
+## 🔑 Key API Endpoints
 
-| Method | Endpoint | Input | Output |
+| Method | Endpoint | Protection | Description |
 |---|---|---|---|
-| POST | `/analyze-jd` | `job_description` | Text summary of skills + role |
-| POST | `/generate-questions` | `job_description` | JSON array of 10 questions |
-| POST | `/evaluate-answer` | `question, answer, role_level` | Score, feedback, better answer |
-| POST | `/generate-report` | `evaluations, job_description` | Overall score, strengths, study plan |
+| `POST` | `/api/auth/register` | Public | Register a new user with hashed password |
+| `POST` | `/api/auth/login` | Public | Authenticate user & return JWT Bearer token |
+| `POST` | `/generate-questions` | Public | Generate 10 role-specific interview questions |
+| `POST` | `/evaluate-answer` | Public | Evaluate answer & return 1-10 score + critique |
+| `POST` | `/generate-report` | Public | Synthesize overall score & study plan |
+| `POST` | `/api/history` | 🔒 JWT Token Required | Save debrief report to user's DB account |
+| `GET` | `/api/history` | 🔒 JWT Token Required | Fetch all saved interview reports for user |
 
 ---
 
-
-
-> *Ps. I actually used this tool to prep for interviews while building it.*
