@@ -83,21 +83,39 @@ No extra text, just the JSON.""",
     return json.loads(cleaned)
 
 def generate_report(evaluations: list, job_description: str):
+
+    if evaluations:
+        calc_avg = round(sum(item.get("score", 1) for item in evaluations) / len(evaluations), 1)
+    else:
+        calc_avg = 1.0
+
     prompt = PromptTemplate(
-        template="""You are an expert interviewer.
-Here are the candidate's interview evaluations:
+        template="""You are an expert interviewer evaluating a candidate's performance.
+Here are the candidate's question-by-question evaluations:
 {evaluations}
 
 Job applied for: {job_description}
 
+CRITICAL RULES FOR EVALUATION:
+1. STRENGTHS: Extract 2-3 strengths ONLY if clearly demonstrated in candidate's ANSWERS. Never use text from the QUESTIONS as candidate strengths. If answers are "no", blank, or low scoring (<4/10), return ["No clear strengths demonstrated due to minimal responses"].
+2. WEAK AREAS: Identify 3 key areas needing improvement.
+3. STUDY PLAN: Provide 3 actionable topics to study.
+
 Return ONLY valid JSON with exactly these keys:
-{{"overall_score": 7.5, "strengths": ["str1", "str2", "str3"], "weak_areas": ["area1", "area2", "area3"], "study_plan": ["topic1", "topic2", "topic3"]}}
+{{"overall_score": {calc_avg}, "strengths": ["..."], "weak_areas": ["..."], "study_plan": ["..."]}}
 
 No extra text, just the JSON.""",
-        input_variables=["evaluations", "job_description"]
+        input_variables=["evaluations", "job_description", "calc_avg"]
     )
+    
     chain = prompt | llm
-    result = chain.invoke({"evaluations": json.dumps(evaluations), "job_description": job_description})
+    result = chain.invoke({
+        "evaluations": json.dumps(evaluations), 
+        "job_description": job_description,
+        "calc_avg": calc_avg
+    })
     
     cleaned = clean_json_string(result.content)
-    return json.loads(cleaned)
+    parsed = json.loads(cleaned)
+    parsed["overall_score"] = calc_avg
+    return parsed
