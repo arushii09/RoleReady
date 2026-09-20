@@ -11,9 +11,10 @@ import { AuthModal } from "@/components/ui/auth-modal";
 interface Hero2Props {
   onStartInterview?: () => void;
   onOpenHistory?: () => void;
+  onOpenAuth?: (mode?: "signin" | "signup") => void;
 }
 
-const Hero2 = ({ onStartInterview, onOpenHistory }: Hero2Props) => {
+const Hero2 = ({ onStartInterview, onOpenHistory, onOpenAuth }: Hero2Props) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
@@ -28,10 +29,20 @@ const Hero2 = ({ onStartInterview, onOpenHistory }: Hero2Props) => {
     }
   }, []);
 
-  const openAuth = (mode: "signin" | "signup") => {
+  const openAuth = (mode: "signin" | "signup" = "signin") => {
     setAuthMode(mode);
     setAuthModalOpen(true);
     setMobileMenuOpen(false);
+    onOpenAuth?.(mode);
+  };
+
+  const handleSimulateInterview = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      openAuth("signin");
+    } else {
+      onStartInterview?.();
+    }
   };
 
   const handleLogout = () => {
@@ -209,7 +220,7 @@ const Hero2 = ({ onStartInterview, onOpenHistory }: Hero2Props) => {
           </p>
           <div className="mt-10 flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
             <button
-              onClick={onStartInterview}
+              onClick={handleSimulateInterview}
               className="h-12 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white px-8 text-base font-semibold transition-all shadow-xl shadow-indigo-500/25 flex items-center gap-2"
             >
               Simulate Your Interview

@@ -6,6 +6,7 @@ import { HistoryDrawer } from "@/components/history-drawer";
 function App() {
   const [view, setView] = useState<"dashboard" | "interview">("dashboard");
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
 
   return (
     <main className="min-h-screen bg-black text-white selection:bg-indigo-500 selection:text-white">
@@ -20,11 +21,12 @@ function App() {
         <Hero2
           onStartInterview={() => setView("interview")}
           onOpenHistory={() => setHistoryOpen(true)}
+          onOpenAuth={() => setIsAuthOpen(true)}
         />
       ) : (
         <InterviewFlow
           onBackToDashboard={() => setView("dashboard")}
-          onOpenAuth={() => {}}
+          onOpenAuth={() => setIsAuthOpen(true)}
         />
       )}
     </main>
