@@ -1,139 +1,187 @@
 # RoleReady — AI Technical Interview Coach
 
-> Paste any job description. Experience an end-to-end multi-step AI mock interview with live answer evaluation, structured scoring, and persistent debrief reports.
+> Paste any job description. Get a full personalized mock interview — AI-generated questions, live answer evaluation with structured scoring, and a persistent debrief report tied to your account.
 
-![Python](https://img.shields.io/badge/Python-3.11-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green) ![React](https://img.shields.io/badge/React-18-blue) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![TailwindCSS](https://img.shields.io/badge/Tailwind-3-38bdf8) ![JWT](https://img.shields.io/badge/Auth-JWT-orange) ![Groq](https://img.shields.io/badge/Groq-LLaMA3.1-purple)
+![Python](https://img.shields.io/badge/Python-3.11-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-latest-green) ![React](https://img.shields.io/badge/React-18-61DAFB) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue) ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED) ![LangChain](https://img.shields.io/badge/LangChain-latest-orange)
 
 ---
 
-## ⚡ What it does
 
-RoleReady is a production-grade full-stack AI platform that simulates a real technical mock interview end to end.
+## What it does
 
 ```
 Paste Job Description
         ↓
-AI analyzes the JD — extracts skills, role level, responsibilities
+AI parses JD — extracts required skills, role level, responsibilities
         ↓
-Generates 10 personalized interview questions (technical + behavioral)
+Generates 10 personalized questions (technical + behavioral mix)
         ↓
-User submits answers for each prompt
+User answers each question
         ↓
-AI evaluates every answer — score out of 10, specific feedback, better answer
+AI evaluates every answer — score 1–10, specific feedback, stronger answer
         ↓
-Final Debrief Report — overall score, strengths, weak areas, study plan
+Final debrief — true average score, strengths, weak areas, study plan
         ↓
-Saved to Database — User history stored in PostgreSQL/SQLite tied to JWT account
+Report saved to database — tied to your JWT account for history tracking
 ```
 
 ---
 
-## 🌐 Demo
-
-> Live Link: [RoleReady](https://role-ready.netlify.app/)  
-> API Docs: `https://roleready-backend-uls8.onrender.com/docs`
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | React 18 + TypeScript + Vite + Tailwind CSS |
-| **Backend** | FastAPI + Python 3.11 |
-| **Security & Auth** | JWT Bearer Tokens (`pyjwt`) + `pbkdf2_sha256` Password Hashing |
-| **Database** | SQLAlchemy ORM + SQLite (Dev) / PostgreSQL (Prod) |
-| **AI Engine** | LangChain + Groq API (`llama-3.1-8b-instant`) |
-| **Deployment** | Render (Backend API) + Netlify / Vercel (Frontend) |
+| Frontend | React 18 + TypeScript + Vite + Tailwind CSS |
+| Backend | FastAPI + Python 3.11 |
+| AI Pipeline | LangChain + Groq API (LLaMA 3.1 8B) |
+| Auth | JWT Bearer Tokens (pyjwt) + bcrypt password hashing |
+| Database | SQLAlchemy ORM — SQLite (dev) / PostgreSQL (prod) |
+| Containers | Docker + Docker Compose (multi-stage Nginx builds) |
+| Deployment | Render (backend Docker service + frontend static site) |
 
 ---
 
-## 💡 Technical Architecture Highlights
+## Architecture
 
-This is not a simple chatbot wrapper — it is a **secure, multi-step production AI system**:
+This is a multi-step AI pipeline, not a single LLM call. Each step has a focused task — which produces better outputs than one large prompt and lets answers be evaluated independently as the user submits them.
 
-1. **Stateful User Authentication**: JWT Bearer Token validation protecting user history endpoints.
-2. **Relational Data Persistence**: SQLAlchemy database schema linking user accounts (`users` table) to saved interview debrief reports (`interview_history` table).
-3. **Multi-Step AI Pipeline**:
-   - `POST /generate-questions` $\rightarrow$ Dynamic question array generation based on JD parsing.
-   - `POST /evaluate-answer` $\rightarrow$ Strict 1-10 scoring & structured feedback per response.
-   - `POST /generate-report` $\rightarrow$ Multi-input synthesis creating a comprehensive study plan.
-   - `POST /api/history` $\rightarrow$ Automatic persistence of debrief reports to database.
+### AI Pipeline
 
----
+```
+POST /generate-questions   → LLM reads JD, returns 10 tailored questions as JSON array
+POST /evaluate-answer      → LLM scores one answer 1–10, returns structured feedback
+POST /generate-report      → LLM aggregates all 10 evaluations into a final debrief
+```
 
-## 📂 Project Structure
+### Auth Flow
 
-```text
-RoleReady/
-├── Backend/
-│   ├── main.py          ← FastAPI routes & CORS setup
-│   ├── chains.py        ← LangChain AI logic & Groq pipelines
-│   ├── auth.py          ← JWT token creation & password hashing
-│   ├── database.py      ← SQLAlchemy DB engine & session setup
-│   ├── models.py        ← User & InterviewHistory SQL tables
-│   ├── schemas.py       ← Pydantic request & response validation
-│   └── requirements.txt
-└── Frontend/
-    ├── src/
-    │   ├── components/  ← Interview Flow, Auth Modal, Footer & Hero UI
-    │   ├── lib/         ← API utility helpers
-    │   └── App.tsx
-    ├── public/          ← Videos and assets
-    ├── package.json
-    └── vite.config.ts
+```
+POST /api/auth/register  → hash password with bcrypt → store in users table
+POST /api/auth/login     → verify bcrypt hash → sign JWT with secret key → return token
+Any protected endpoint   → FastAPI reads Authorization header → verifies JWT signature
+                         → extracts user_id → scopes all DB queries to that user
+```
+
+### Container Architecture
+
+```
+docker-compose.yml
+├── backend   Python 3.11-slim container, port 8000
+│             FastAPI + LangChain + SQLAlchemy
+└── frontend  Multi-stage build:
+              Stage 1 — Node 20 compiles React/TS → static dist/
+              Stage 2 — Nginx serves dist/ (<25MB final image)
+Both containers share an isolated Docker network.
+```
+
+### Database Schema
+
+```
+users
+  id, email, hashed_password, created_at
+
+interview_history
+  id, user_id (FK → users.id), job_description,
+  overall_score, strengths, weak_areas, study_plan,
+  evaluations (JSON), created_at
 ```
 
 ---
 
-## 🚀 Run Locally
+## Project Structure
 
-### 1. Clone the repository
+```
+RoleReady/
+├── docker-compose.yml       ← Orchestrates backend + frontend containers
+├── Backend/
+│   ├── Dockerfile           ← Python 3.11-slim container
+│   ├── main.py              ← FastAPI routes + CORS
+│   ├── chains.py            ← LangChain AI pipeline
+│   ├── auth.py              ← JWT creation + bcrypt verification
+│   ├── database.py          ← SQLAlchemy engine + session management
+│   ├── models.py            ← User + InterviewHistory table definitions
+│   ├── schemas.py           ← Pydantic request/response validation
+│   └── requirements.txt
+└── Frontend/
+    ├── Dockerfile           ← Multi-stage Node → Nginx build
+    └── src/
+        ├── components/      ← Interview flow, auth modal, UI
+        ├── lib/             ← API utility functions
+        ├── config.ts        ← API URL configuration
+        └── App.tsx
+```
+
+---
+
+## Run Locally
+
+### Option A — Docker (recommended)
+
+Requires Docker Desktop running.
+
 ```bash
 git clone https://github.com/arushii09/RoleReady.git
 cd RoleReady
 ```
 
-### 2. Set up the Backend
+Create `Backend/.env`:
+```
+GROQ_API_KEY=your_groq_api_key
+SECRET_KEY=your_jwt_secret_key
+```
+
+```bash
+docker compose up --build
+```
+
+| Service | URL |
+|---|---|
+| Frontend | http://localhost:3000 |
+| Backend | http://localhost:8000 |
+| API Docs | http://localhost:8000/docs |
+
+### Option B — Manual
+
+**Backend:**
 ```bash
 cd Backend
 pip install -r requirements.txt
-```
-
-Create a `.env` file inside `Backend/`:
-```env
-GROQ_API_KEY=your_groq_api_key_here
-SECRET_KEY=your_jwt_secret_key_here
-```
-
-Start the FastAPI server:
-```bash
 uvicorn main:app --reload --port 8000
 ```
 
-### 3. Set up the Frontend
-In a new terminal:
+**Frontend:**
 ```bash
 cd Frontend
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000` (or `http://localhost:5173`) in your browser!
+Open `http://localhost:5173`
 
 ---
 
-## 🔑 Key API Endpoints
+## API Reference
 
-| Method | Endpoint | Protection | Description |
+| Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| `POST` | `/api/auth/register` | Public | Register a new user with hashed password |
-| `POST` | `/api/auth/login` | Public | Authenticate user & return JWT Bearer token |
-| `POST` | `/generate-questions` | Public | Generate 10 role-specific interview questions |
-| `POST` | `/evaluate-answer` | Public | Evaluate answer & return 1-10 score + critique |
-| `POST` | `/generate-report` | Public | Synthesize overall score & study plan |
-| `POST` | `/api/history` | 🔒 JWT Token Required | Save debrief report to user's DB account |
-| `GET` | `/api/history` | 🔒 JWT Token Required | Fetch all saved interview reports for user |
+| POST | `/api/auth/register` | Public | Create account with hashed password |
+| POST | `/api/auth/login` | Public | Verify credentials, return JWT token |
+| POST | `/generate-questions` | Public | Generate 10 role-specific questions |
+| POST | `/evaluate-answer` | Public | Score answer 1–10 with feedback |
+| POST | `/generate-report` | Public | Synthesize final debrief report |
+| POST | `/api/history` | JWT | Save debrief to user account |
+| GET | `/api/history` | JWT | Fetch all saved reports for user |
 
 ---
 
+## Known limitations + planned fixes
+
+- **Malformed JSON from LLM** — `json.loads()` can crash if Groq returns unexpected output. Fix: Pydantic v2 validation with retry logic.
+- **No token refresh** — JWT expires and user must log in again. Fix: refresh token pattern.
+- **Free tier cold starts** — Render spins down after inactivity, causing 30–50s first-load delay on the free plan.
+
+---
+
+## Built by
+
+Arushi
