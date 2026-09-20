@@ -52,7 +52,7 @@ export function HistoryDrawer({ isOpen, onClose }: HistoryDrawerProps) {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:8000/api/history", {
+      const res = await fetch("https://roleready-backend-uls8.onrender.com/api/history", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

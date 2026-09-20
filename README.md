@@ -31,7 +31,7 @@ Saved to Database — User history stored in PostgreSQL/SQLite tied to JWT accou
 ## 🌐 Demo
 
 > Live Link: [RoleReady](https://role-ready.netlify.app/)  
-> API Docs: `http://localhost:8000/docs`
+> API Docs: `https://roleready-backend-uls8.onrender.com/docs`
 
 ---
 

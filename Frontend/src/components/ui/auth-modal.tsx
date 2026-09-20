@@ -21,7 +21,7 @@ export function AuthModal({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -53,7 +53,7 @@ export function AuthModal({
     try {
       if (isSignUp) {
         // Sign Up API Call -> JSON to POST /api/auth/register
-        const response = await fetch("http://localhost:8000/api/auth/register", {
+        const response = await fetch("https://roleready-backend-uls8.onrender.com/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
@@ -66,13 +66,13 @@ export function AuthModal({
         }
 
         setSuccessMsg("Account created! Logging you in...");
-        
+
         // After successful registration, automatically log in to fetch JWT Token
         const loginFormData = new URLSearchParams();
         loginFormData.append("username", email);
         loginFormData.append("password", password);
 
-        const loginRes = await fetch("http://localhost:8000/api/auth/login", {
+        const loginRes = await fetch("https://roleready-backend-uls8.onrender.com/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: loginFormData,
@@ -95,7 +95,7 @@ export function AuthModal({
         formData.append("username", email);
         formData.append("password", password);
 
-        const response = await fetch("http://localhost:8000/api/auth/login", {
+        const response = await fetch("https://roleready-backend-uls8.onrender.com/api/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: formData,
@@ -155,7 +155,7 @@ export function AuthModal({
 
             {/* Left/Right Sliding Layout */}
             <div className="relative w-full h-full min-h-[560px] flex flex-col md:flex-row overflow-hidden">
-              
+
               {/* Form Section */}
               <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative z-10">
                 <div className="mb-6">

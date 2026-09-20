@@ -95,7 +95,7 @@ export function InterviewFlow({ onBackToDashboard, onOpenAuth }: InterviewFlowPr
     setLoadingQuestions(true);
 
     try {
-      const res = await fetch("http://localhost:8000/generate-questions", {
+      const res = await fetch("https://roleready-backend-uls8.onrender.com/generate-questions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ job_description: jobDescription }),
@@ -142,7 +142,7 @@ export function InterviewFlow({ onBackToDashboard, onOpenAuth }: InterviewFlowPr
     const currentQ = questions[currentQuestionIndex];
 
     try {
-      const res = await fetch("http://localhost:8000/evaluate-answer", {
+      const res = await fetch("https://roleready-backend-uls8.onrender.com/evaluate-answer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -188,7 +188,7 @@ export function InterviewFlow({ onBackToDashboard, onOpenAuth }: InterviewFlowPr
     setStep("report");
 
     try {
-      const res = await fetch("http://localhost:8000/generate-report", {
+      const res = await fetch("https://roleready-backend-uls8.onrender.com/generate-report", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -209,7 +209,7 @@ export function InterviewFlow({ onBackToDashboard, onOpenAuth }: InterviewFlowPr
       const token = localStorage.getItem("token");
       if (token) {
         try {
-          await fetch("http://localhost:8000/api/history", {
+          await fetch("https://roleready-backend-uls8.onrender.com/api/history", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
